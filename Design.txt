@@ -1,0 +1,43 @@
+1. Create Scrabble class.
+	Constructor
+		1.	Array with number of letters in bag. (Make it a map of the letters,
+			each letter has the number associated with it, space represents
+			blank letter tile)
+		2.	Array with the game board. (Can be anysize, but needs to have three
+			dimensions. 1st dimension is where words will be placed.
+			2nd dimension is where word multipliers will be placed, and third
+			dimension is where letter multipliers will be placed.)
+		3.	Freeplay, default false. (When true it allows words to be placed on
+			board regardless of rules)
+
+	putWord
+		1.	word
+		2.	location on board (first letter)
+		3.	vertical or horizontal
+		Returns the number of points earned by the word. (Including multipliers,
+			and other words created)
+		Returns 0 can't be played according to the rules. (Rules will not check
+			if there can be more than 7 letters placed)
+
+	theorizeWord
+		Same as put word, except the board won't actually be changed. This is to
+			allow for quicker checking of multiple words in an area.
+
+	getBoardState
+		Returns a boardState object that can be used to reconstruct the current
+			board. Should include the letter bag, board, and words on the board.
+			Do not include freeplay state.
+
+	loadBoardState
+		load a boardState object, freeplay state should stay the same.
+
+	setFreePlay
+		true or false
+
+	isFreePlay
+		returns true if the board is currently in freeplay mode.
+
+	printBoard
+		1. Show multipliers = false (Showing the multipliers may create
+			confusion, hence off by default, but it is a useful option.)
+		Prints out the current board with all of the words on it.

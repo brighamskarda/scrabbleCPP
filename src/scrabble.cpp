@@ -25,8 +25,7 @@ int main() {
 											{'2', '2', '2'}
 										};
 	BoardState bs(myMap, lv, wm, lm);
-	std::cout << bs.letterVector[0][2] << std::endl;
-
+	ScrabbleBoard sb(bs);
 
 	return 0;
 }

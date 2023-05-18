@@ -8,8 +8,8 @@ struct BoardState
 public:
 	std::map<char, short> letterBag;
 	std::vector<std::vector<char>> letterVector;
-	const std::vector<std::vector<char>> wordMultipliers;
-	const std::vector<std::vector<char>> letterMultipliers;
+	std::vector<std::vector<char>> wordMultipliers;
+	std::vector<std::vector<char>> letterMultipliers;
 	/**
 		Takes in all of the paremeters necessary to start a game of scrabble.
 		It is also possible to give it a game that is already in progress.
@@ -28,8 +28,8 @@ public:
 	*/
 	BoardState(std::map<char, short> lb,
 		std::vector<std::vector<char>> lv,
-		const std::vector<std::vector<char>> wm,
-		const std::vector<std::vector<char>> lm) : letterBag(lb),
+		std::vector<std::vector<char>> wm,
+		std::vector<std::vector<char>> lm) : letterBag(lb),
 		letterVector(lv), wordMultipliers(wm), letterMultipliers(lm) {}
 };
 

@@ -15,17 +15,19 @@ int main() {
 										};
 
 	std::vector<std::vector<char>> wm = {
-											{'1', '1', '1'},
-											{'1', '1', '1'},
-											{'1', '1', '1'}
+											{3, 1, 1},
+											{1, 3, 1},
+											{1, 1, 3}
 										};
 	std::vector<std::vector<char>> lm = {
-											{'2', '2', '2'},
-											{'2', '2', '2'},
-											{'2', '2', '2'}
+											{2, 2, 2},
+											{2, 2, 2},
+											{2, 2, 2}
 										};
 	BoardState bs(myMap, lv, wm, lm);
 	ScrabbleBoard sb(bs);
+
+	sb.printBoard(true);
 
 	return 0;
 }

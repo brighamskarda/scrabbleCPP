@@ -1,5 +1,6 @@
 #include "ScrabbleBoard.h"
 #include <iostream>
+#include <fstream>
 #include <stdexcept>
 
 bool ScrabbleBoard::boardIsValid() const
@@ -39,6 +40,26 @@ bool ScrabbleBoard::boardIsValid() const
 	return true;
 }
 
+int ScrabbleBoard::putWordFreeplay(size_t x, size_t y, bool vertical,
+	std::string s)
+{
+	return INT_MIN;
+}
+
+void ScrabbleBoard::loadDictionary()
+{
+	std::ifstream dic("resources/CollinsScrabbleWords2019.txt");
+	std::string currentWord;
+	std::getline(dic, currentWord);
+	while(true)
+	{
+		dictionary.insert(currentWord);
+		if(dic.eof()) break;
+		std::getline(dic, currentWord);
+	}
+	std::cout << "Finished loading dictionary" << std::endl;
+}
+
 
 ScrabbleBoard::ScrabbleBoard(BoardState bs, bool fp) : boardState(bs),
 	freePlay(fp)
@@ -49,6 +70,7 @@ ScrabbleBoard::ScrabbleBoard(BoardState bs, bool fp) : boardState(bs),
 		"letterMultipliers vectors are not all of the same size, or have a "
 		"length of 0");
 	}
+	loadDictionary();
 }
 
 bool ScrabbleBoard::setBoardState(BoardState bs)
@@ -117,4 +139,37 @@ std::string ScrabbleBoard::toString(bool showMultipliers) const
 void ScrabbleBoard::printBoard(bool showMultipliers) const
 {
 	std::cout << toString(showMultipliers) << std::endl;
+}
+
+int ScrabbleBoard::putWord(size_t x, size_t y, bool vertical, std::string s)
+{
+	/*
+		Steps to implement:
+		1. If in freeplay mode, then call that function. Implement it later
+			since it doesn't really have a purpose as to what I want to do right
+			now.
+		2. Check if the word is in the dictionary.
+		3. Check if the word goes off the board.
+		4. Start a counter so we know how deep we've gone.
+		5. Place down first letter (If we must use a blank tile, be sure to
+			note that in the blankTileLocation vector).
+			a. Make sure there isn't already a letter there. If there is, make
+				sure its the correct letter. If there is not, make sure we have
+				an appropriate letter in the bag.
+			b. Apply letter score multiplier if you actually place down a
+				letter. Be sure to check the blankTileLocation.
+			c. Check the word the perpendicular direction.
+				i. Make sure it is a word
+				ii. Count up the points, including multipliers.
+			d. If it is on a word multiplier square, be sure to multiply that to
+				the outside variable including the multiplication.
+		6. Continue
+		7. If the move becomes invalid, make sure to set the board back to where
+			it was.
+	*/
+
+	if(freePlay) return putWordFreeplay(x, y, vertical, s);
+
+
+	return INT_MIN;
 }

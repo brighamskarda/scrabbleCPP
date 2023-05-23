@@ -7,6 +7,7 @@ struct BoardState
 {
 public:
 	std::map<char, short> letterBag;
+	std::map<char, short> letterPoints;
 	std::vector<std::vector<char>> letterVector;
 	std::vector<std::vector<char>> wordMultipliers;
 	std::vector<std::vector<char>> letterMultipliers;
@@ -15,7 +16,9 @@ public:
 		It is also possible to give it a game that is already in progress.
 		As of now, it only supports ASCII characters, perhaps someday it can
 		be internationalized.
-		@param lb Pointer to a map of char - number of that character
+		@param lb A map of char - number of that character
+			space represents a blank tile.
+		@param lp A map of char - value of that character
 			space represents a blank tile.
 		@param lv A 2D vector representing places on the board that
 			can hold letters. '.' represents an empty spot.
@@ -27,9 +30,10 @@ public:
 			Supports negative multipliers. Must have same dimensions as lv.
 	*/
 	BoardState(std::map<char, short> lb,
+		std::map<char, short> lp,
 		std::vector<std::vector<char>> lv,
 		std::vector<std::vector<char>> wm,
-		std::vector<std::vector<char>> lm) : letterBag(lb),
+		std::vector<std::vector<char>> lm) : letterBag(lb), letterPoints(lp),
 		letterVector(lv), wordMultipliers(wm), letterMultipliers(lm) {}
 };
 

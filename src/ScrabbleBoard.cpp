@@ -2,6 +2,7 @@
 #include <iostream>
 #include <fstream>
 #include <stdexcept>
+#include <climits>
 
 bool ScrabbleBoard::boardIsValid() const
 {

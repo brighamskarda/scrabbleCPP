@@ -23,8 +23,11 @@ private:
 	bool boardIsValid() const;
 
 	/**
-		This is a helper function to the public putWord. It will use the rules
-		I later define for freeplay mode. If I ever define them.
+		This is a helper function to the public putWord. If freePlay is enabled,
+		then this will be used instead of the normal putWord functionality.
+		The difference from normal mode is that words don't have to be connected
+		when you place them down. And the first word doesn't have to cross the
+		center.
 	*/
 	int putWordFreeplay(size_t x, size_t y, bool vertical, std::string s);
 

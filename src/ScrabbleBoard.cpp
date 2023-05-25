@@ -44,7 +44,120 @@ bool ScrabbleBoard::boardIsValid() const
 int ScrabbleBoard::putWordFreeplay(size_t x, size_t y, bool vertical,
 	std::string s)
 {
-	return INT_MIN;
+	// Make a copy of the boardState and blankTileLocation to revert back to in
+	// case the word turns out to be invalid.
+	BoardState tempState = boardState;
+	std::vector<std::pair<size_t, size_t>> tempBlankTileLocation =
+		blankTileLocation;
+
+	// If the word is not in the dictionary it is invalid. Remove whitespace
+	// first.
+	std::string tempString = s;
+	for(size_t i = tempString.size(); i > 0; i--)
+	{
+		if(tempString[i-1] == ' ') tempString.erase(i-1, 1);
+	}
+	if(dictionary.count(tempString) <= 0) return INT_MIN;
+
+	// If the word goes off the board it is invalid.
+	if(x >= boardState.letterVector[0].size() ||
+		y >= boardState.letterVector.size() ||
+		(vertical && y + s.size() > boardState.letterVector.size()) ||
+		(!vertical && x + s.size() > boardState.letterVector[0].size())
+	) return INT_MIN;
+
+	// Start putting in letters.
+	size_t tilesPlaced = 0;
+	size_t stringPosition = 0;
+	int totalScore = 0;
+	int baseWordScore = 0;
+	int baseWordMultiplier = 1;
+	size_t currentX = x;
+	size_t currentY = y;
+	bool goBack = false;
+	for( ; stringPosition < s.size(); stringPosition++)
+	{
+		// If the spot is empty
+		if(boardState.letterVector[currentY][currentX] == '.')
+		{
+			if(s[stringPosition] != ' ')
+			{
+				boardState.letterVector[currentY][currentX] = s[stringPosition];
+			}
+			// If you use a blank tile.
+			else
+			{
+				boardState.letterVector[currentY][currentX] =
+					s[stringPosition+1];
+				blankTileLocation.push_back({currentX, currentY});
+			}
+			tilesPlaced++;
+			// If the player has placed more than 7 tiles, then the move
+			// become invalid.
+			if(tilesPlaced > 7)
+			{
+				goBack = true;
+				break;
+			}
+			// Calculate scores, and remove the letter from the bag.
+			if(boardState.letterBag.at(s[stringPosition]) > 0)
+			{
+				boardState.letterBag.at(s[stringPosition])--;
+				baseWordScore += boardState.letterPoints.at(s[stringPosition]) *
+					boardState.letterMultipliers[currentY][currentX];
+				baseWordMultiplier *=
+					boardState.wordMultipliers[currentY][currentX];
+				int additionalWordScore = calcAdditionalWord(currentX, currentY,
+					vertical);
+				if(additionalWordScore == INT_MIN)
+				{
+					goBack = true;
+					break;
+				}
+				totalScore += additionalWordScore;
+			}
+			// There is no tile available
+			else
+			{
+				goBack = true;
+				break;
+			}
+		}
+		// If the spot already has the correct letter in place. Be sure to still
+		// add that letter to the baseWordScore. (only if its not a blank)
+		else if(boardState.letterVector[currentY][currentX] ==
+			s[stringPosition] && !checkForBlankTile(currentX, currentY))
+		{
+			baseWordScore += boardState.letterPoints.at(s[stringPosition]);
+		}
+		// If the spot is already taken by an incorrect letter then the move is
+		// invalid.
+		else if(boardState.letterVector[currentY][currentX] !=
+			s[stringPosition])
+		{
+			goBack = true;
+			break;
+		}
+		// Increment in the correct direction.
+		if(vertical) currentY++;
+		else currentX++;
+		// If the letter was a space, we need to increment again.
+		if(s[stringPosition] == ' ') stringPosition++;
+	}
+	// Revert to the previous state if the word turns out to be an invalid play.
+	if(goBack)
+	{
+		boardState = tempState;
+		blankTileLocation = tempBlankTileLocation;
+		return INT_MIN;
+	}
+	totalScore += baseWordScore * baseWordMultiplier;
+
+	// Add 50 points if the player placed all 7 of their tiles.
+	if(tilesPlaced == 7) totalScore += 50;
+
+
+	return totalScore;
 }
 
 void ScrabbleBoard::loadDictionary()
@@ -262,30 +375,6 @@ void ScrabbleBoard::printBoard(bool showMultipliers) const
 
 int ScrabbleBoard::putWord(size_t x, size_t y, bool vertical, std::string s)
 {
-	/*
-		Steps to implement:
-		1. If in freeplay mode, then call that function. Implement it later
-			since it doesn't really have a purpose as to what I want to do right
-			now.
-		2. Check if the word is in the dictionary.
-		3. Check if the word goes off the board.
-		4. Start a counter so we know how deep we've gone.
-		5. Place down first letter (If we must use a blank tile, be sure to
-			note that in the blankTileLocation vector).
-			a. Make sure there isn't already a letter there. If there is, make
-				sure its the correct letter. If there is not, make sure we have
-				an appropriate letter in the bag.
-			b. Apply letter score multiplier if you actually place down a
-				letter. Be sure to check the blankTileLocation.
-			c. Check the word the perpendicular direction.
-				i. Make sure it is a word
-				ii. Count up the points, including multipliers.
-			d. If it is on a word multiplier square, be sure to multiply that to
-				the outside variable including the multiplication.
-		6. Continue
-		7. If the move becomes invalid, make sure to set the board back to where
-			it was.
-	*/
 	// Go to freeplay mode if enabled.
 	if(freePlay) return putWordFreeplay(x, y, vertical, s);
 
@@ -295,8 +384,8 @@ int ScrabbleBoard::putWord(size_t x, size_t y, bool vertical, std::string s)
 	std::vector<std::pair<size_t, size_t>> tempBlankTileLocation =
 		blankTileLocation;
 
-	// If the word is not in the dictionary it is invalid. Remove whitespace
-	// first.
+	// If the word is not in the dictionary it is invalid. (Remove whitespace
+	// first.)
 	std::string tempString = s;
 	for(size_t i = tempString.size(); i > 0; i--)
 	{
@@ -320,6 +409,7 @@ int ScrabbleBoard::putWord(size_t x, size_t y, bool vertical, std::string s)
 	size_t currentX = x;
 	size_t currentY = y;
 	bool goBack = false;
+	bool additionalWordCreated = false;
 	for( ; stringPosition < s.size(); stringPosition++)
 	{
 		// If the spot is empty
@@ -360,6 +450,7 @@ int ScrabbleBoard::putWord(size_t x, size_t y, bool vertical, std::string s)
 					break;
 				}
 				totalScore += additionalWordScore;
+				if(additionalWordScore > 0) additionalWordCreated = true;
 			}
 			// There is no tile available
 			else
@@ -389,6 +480,13 @@ int ScrabbleBoard::putWord(size_t x, size_t y, bool vertical, std::string s)
 		// If the letter was a space, we need to increment again.
 		if(s[stringPosition] == ' ') stringPosition++;
 	}
+	// If the center tile is not filled in, then the move is invalid.
+	if(boardState.letterVector[7][7] == '.') goBack = true;
+
+	// If the word does not connect to the rest, then the move is invalid.
+	if(tempState.letterVector[7][7] != '.' && !additionalWordCreated &&
+		tilesPlaced == tempString.size()) goBack = true;
+
 	// Revert to the previous state if the word turns out to be an invalid play.
 	if(goBack)
 	{

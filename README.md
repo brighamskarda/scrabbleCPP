@@ -45,10 +45,11 @@ putWord() function. This is by far the most complex section of code so far
 as it essentially contains the rules for Scrabble. There is definently some
 optimization to be found here later down the line.
 
-The next step is to actually implement an algorithm that will attempt to find
-the best possible move. I will probably first implement a dumb algorithm
-that essentially plays infinite random games. Then I will start development
-on a slightly smarter algorithm.
+An algorithm that essentially tries to place randome words on the board has aslo
+been implemented. It sucks, but its a good starting place to get me thinking
+about how I want to do this.
+
+Next step, implement an algorithm that actually gives good results.
 
 ### Build Instructions
 The build is pretty simple as there are only a few cpp files to compile so far.
@@ -79,6 +80,10 @@ It would be fairly easy to implement the above rules. But for my purposes right
 now, I don't have a need/want to work on a scrabble board with anything but the
 standard rules. Suppport for different rulesets is not a gurantee for this
 project.
+
+##### Optimization
+I did not include optimizations in my build/run script. You probably want to
+give it the parameters -O2 or -O3 for good optimization.
 
 ### Shoutouts
 I would like to give a huge shoutout to the devlopers of the

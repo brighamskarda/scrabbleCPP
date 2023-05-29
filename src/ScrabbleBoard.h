@@ -12,7 +12,6 @@ class ScrabbleBoard
 private:
 	BoardState boardState;
 	bool freePlay;
-	std::vector<std::pair<size_t, size_t>> blankTileLocation = {};
 	std::unordered_set<std::string> dictionary;
 
 	/**
@@ -49,6 +48,10 @@ private:
 	*/
 	bool checkForBlankTile(size_t x, size_t y) const;
 public:
+	/**
+		Default constructor that generates the standard scrabble board.
+	*/
+	ScrabbleBoard(bool fp = false);
 	/**
 		Takes in a boardState and verifies that it is valid. Mostly if the
 		vectors in the board state are of different sizes, then an exception

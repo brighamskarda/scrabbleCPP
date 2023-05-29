@@ -44,11 +44,9 @@ bool ScrabbleBoard::boardIsValid() const
 int ScrabbleBoard::putWordFreeplay(size_t x, size_t y, bool vertical,
 	std::string s)
 {
-	// Make a copy of the boardState and blankTileLocation to revert back to in
+	// Make a copy of the boardState to revert back to in
 	// case the word turns out to be invalid.
 	BoardState tempState = boardState;
-	std::vector<std::pair<size_t, size_t>> tempBlankTileLocation =
-		blankTileLocation;
 
 	// If the word is not in the dictionary it is invalid. Remove whitespace
 	// first.
@@ -89,7 +87,7 @@ int ScrabbleBoard::putWordFreeplay(size_t x, size_t y, bool vertical,
 			{
 				boardState.letterVector[currentY][currentX] =
 					s[stringPosition+1];
-				blankTileLocation.push_back({currentX, currentY});
+				boardState.blankTileLocation.push_back({currentX, currentY});
 			}
 			tilesPlaced++;
 			// If the player has placed more than 7 tiles, then the move
@@ -148,7 +146,6 @@ int ScrabbleBoard::putWordFreeplay(size_t x, size_t y, bool vertical,
 	if(goBack)
 	{
 		boardState = tempState;
-		blankTileLocation = tempBlankTileLocation;
 		return INT_MIN;
 	}
 	totalScore += baseWordScore * baseWordMultiplier;
@@ -171,7 +168,7 @@ void ScrabbleBoard::loadDictionary()
 		if(dic.eof()) break;
 		std::getline(dic, currentWord);
 	}
-	std::cout << "Finished loading dictionary" << std::endl;
+	std::cout << "Finished loading dictionary for ScrabbleBoard" << std::endl;
 }
 
 int ScrabbleBoard::calcAdditionalWord(size_t x, size_t y, bool vertical) const
@@ -285,13 +282,86 @@ int ScrabbleBoard::calcAdditionalWord(size_t x, size_t y, bool vertical) const
 
 bool ScrabbleBoard::checkForBlankTile(size_t x, size_t y) const
 {
-	for(std::pair<size_t, size_t> p : blankTileLocation)
+	for(std::pair<size_t, size_t> p : boardState.blankTileLocation)
 	{
 		if(p.first == x && p.second == y) return true;
 	}
 	return false;
 }
 
+ScrabbleBoard::ScrabbleBoard(bool fp) : freePlay(fp)
+{
+	std::map<char, short> lb = {{'A', 9}, {'B', 2}, {'C', 2}, {'D', 4},
+		{'E', 12}, {'F', 2}, {'G', 3}, {'H', 2}, {'I', 9}, {'J', 1}, {'K', 1},
+		{'L', 4}, {'M', 2}, {'N', 6}, {'O', 8}, {'P', 2}, {'Q', 1}, {'R', 6},
+		{'S', 4}, {'T', 6}, {'U', 4}, {'V', 2}, {'W', 2}, {'X', 1}, {'Y', 2},
+		{'Z', 1}, {' ', 2}};
+	std::map<char, short> lp = {{'A', 1}, {'B', 3}, {'C', 3}, {'D', 2},
+		{'E', 1}, {'F', 4}, {'G', 2}, {'H', 4}, {'I', 1}, {'J', 8}, {'K', 5},
+		{'L', 1}, {'M', 3}, {'N', 1}, {'O', 1}, {'P', 3}, {'Q', 10}, {'R', 1},
+		{'S', 1}, {'T', 1}, {'U', 1}, {'V', 4}, {'W', 4}, {'X', 8}, {'Y', 4},
+		{'Z', 10}, {' ', 0}};
+	std::vector<std::vector<char>> lv = {
+	{'.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.'},
+	{'.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.'},
+	{'.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.'},
+	{'.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.'},
+	{'.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.'},
+	{'.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.'},
+	{'.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.'},
+	{'.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.'},
+	{'.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.'},
+	{'.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.'},
+	{'.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.'},
+	{'.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.'},
+	{'.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.'},
+	{'.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.'},
+	{'.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.'}
+										};
+	std::vector<std::vector<char>> wm = {
+								{3, 1, 1, 1, 1, 1, 1, 3, 1, 1, 1, 1, 1, 1, 3},
+								{1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1},
+								{1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1},
+								{1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1, 1},
+								{1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1},
+								{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
+								{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
+								{3, 1, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 3},
+								{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
+								{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
+								{1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1},
+								{1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1, 1},
+								{1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1},
+								{1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1},
+								{3, 1, 1, 1, 1, 1, 1, 3, 1, 1, 1, 1, 1, 1, 3}
+										};
+	std::vector<std::vector<char>> lm = {
+								{1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1, 1},
+								{1, 1, 1, 1, 1, 3, 1, 1, 1, 3, 1, 1, 1, 1, 1},
+								{1, 1, 1, 1, 1, 1, 2, 1, 2, 1, 1, 1, 1, 1, 1},
+								{2, 1, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 2},
+								{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
+								{1, 3, 1, 1, 1, 3, 1, 1, 1, 3, 1, 1, 1, 3, 1},
+								{1, 1, 2, 1, 1, 1, 2, 1, 2, 1, 1, 1, 2, 1, 1},
+								{1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1, 1},
+								{1, 1, 2, 1, 1, 1, 2, 1, 2, 1, 1, 1, 2, 1, 1},
+								{1, 3, 1, 1, 1, 3, 1, 1, 1, 3, 1, 1, 1, 3, 1},
+								{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
+								{2, 1, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 2},
+								{1, 1, 1, 1, 1, 1, 2, 1, 2, 1, 1, 1, 1, 1, 1},
+								{1, 1, 1, 1, 1, 3, 1, 1, 1, 3, 1, 1, 1, 1, 1},
+								{1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1, 1}
+										};
+	BoardState bs(lb, lp, lv, wm, lm);
+	boardState = bs;
+	if(boardIsValid() == false)
+	{
+		throw std::invalid_argument("letterVector, wordMultipliers, and "
+		"letterMultipliers vectors are not all of the same size, or have a "
+		"length of 0");
+	}
+	loadDictionary();
+}
 
 ScrabbleBoard::ScrabbleBoard(BoardState bs, bool fp) : boardState(bs),
 	freePlay(fp)
@@ -378,11 +448,9 @@ int ScrabbleBoard::putWord(size_t x, size_t y, bool vertical, std::string s)
 	// Go to freeplay mode if enabled.
 	if(freePlay) return putWordFreeplay(x, y, vertical, s);
 
-	// Make a copy of the boardState and blankTileLocation to revert back to in
+	// Make a copy of the boardState to revert back to in
 	// case the word turns out to be invalid.
 	BoardState tempState = boardState;
-	std::vector<std::pair<size_t, size_t>> tempBlankTileLocation =
-		blankTileLocation;
 
 	// If the word is not in the dictionary it is invalid. (Remove whitespace
 	// first.)
@@ -424,7 +492,7 @@ int ScrabbleBoard::putWord(size_t x, size_t y, bool vertical, std::string s)
 			{
 				boardState.letterVector[currentY][currentX] =
 					s[stringPosition+1];
-				blankTileLocation.push_back({currentX, currentY});
+				boardState.blankTileLocation.push_back({currentX, currentY});
 			}
 			tilesPlaced++;
 			// If the player has placed more than 7 tiles, then the move
@@ -491,7 +559,6 @@ int ScrabbleBoard::putWord(size_t x, size_t y, bool vertical, std::string s)
 	if(goBack)
 	{
 		boardState = tempState;
-		blankTileLocation = tempBlankTileLocation;
 		return INT_MIN;
 	}
 	totalScore += baseWordScore * baseWordMultiplier;

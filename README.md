@@ -64,7 +64,7 @@ I know its almost sinful to use Powershell, but I don't like the implementations
 of BASH for windows, and was too lazy to use an actual build system like CMake.
 
 ### Gotchas
-##### Different Rulesets
+#### Different Rulesets
 Originally I intended this framework to support multiple scrabble rulesets.
 It is still capable of doing so for the most part. The two major limitations
 to be aware of in this respect are
@@ -81,7 +81,7 @@ now, I don't have a need/want to work on a scrabble board with anything but the
 standard rules. Suppport for different rulesets is not a gurantee for this
 project.
 
-##### Optimization
+#### Optimization
 I did not include optimizations in my build/run script. You probably want to
 give it the parameters -O2 or -O3 for good optimization.
 

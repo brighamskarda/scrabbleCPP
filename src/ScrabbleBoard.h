@@ -109,6 +109,11 @@ public:
 	*/
 	int putWord(size_t x, size_t y, bool vertical, std::string s);
 
+	/**
+		Restores the scrabble boards to a standard scrabbleBoardState
+	*/
+	void refreshBoard();
+
 };
 
 

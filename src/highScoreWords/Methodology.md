@@ -8,6 +8,7 @@ its first letter and still be valid.
 Then select the highest possible scoring word with the letters that we have left.
 
 1. Create highScoreWords class. ✓✓✓
+1.5. Put refreshBoard function in the ScrabbleBoard class.
 2. Create a script that finds the highest scoring words down the left side.
 This should find the 100 best words and put them in a vector. (100 can be
 reduced to possibly increase performance). (All words should be 15 letters).

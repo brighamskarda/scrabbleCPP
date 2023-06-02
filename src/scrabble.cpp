@@ -4,10 +4,13 @@
 #include "BoardState.h"
 #include "ScrabbleBoard.h"
 #include "RandomGames.h"
+#include "highScoreWords/HighScoreWords.h"
 
 int main() {
-	RandomGames rg;
-	rg.runRandomGames();
+	HighScoreWords hsw;
+
+	// RandomGames rg;
+	// rg.runRandomGames();
 
 	// ScrabbleBoard sb;
 	// std::cout << "WASHING - " << sb.putWord(5, 7, false, "WASHING")

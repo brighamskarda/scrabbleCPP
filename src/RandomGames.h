@@ -1,5 +1,6 @@
 #ifndef RANDOM_GAMES_H
 #define RANDOM_GAMES_H
+#include "constants.h"
 #include "ScrabbleBoard.h"
 #include <random>
 #include <ctime>

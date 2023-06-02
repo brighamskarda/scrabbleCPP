@@ -1,3 +1,4 @@
+#include "constants.h"
 #include "ScrabbleBoard.h"
 #include <iostream>
 #include <fstream>
@@ -159,7 +160,7 @@ int ScrabbleBoard::putWordFreeplay(size_t x, size_t y, bool vertical,
 
 void ScrabbleBoard::loadDictionary()
 {
-	std::ifstream dic("resources/CollinsScrabbleWords2019.txt");
+	std::ifstream dic(std::string(constants::DICTIONARY));
 	std::string currentWord;
 	std::getline(dic, currentWord);
 	while(true)

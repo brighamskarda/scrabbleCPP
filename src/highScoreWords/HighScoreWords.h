@@ -10,7 +10,7 @@ class HighScoreWords
 private:
 	ScrabbleBoard sb;
 	std::vector<std::string> dictionary = {};
-	std::vector<std::string> baseWords = {};
+	std::vector<std::pair<std::string, int>> baseWords = {};
 
 
 	void loadDictionary();
@@ -18,7 +18,9 @@ private:
 	/**
 		@param num The best *num* words are saved.
 	*/
-	void loadBaseWords(int num);
+	void loadBaseWords(size_t num = 20);
+
+	void printBaseWords();
 
 public:
 	HighScoreWords();

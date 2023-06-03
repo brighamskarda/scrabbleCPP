@@ -91,13 +91,6 @@ int ScrabbleBoard::putWordFreeplay(size_t x, size_t y, bool vertical,
 				boardState.blankTileLocation.push_back({currentX, currentY});
 			}
 			tilesPlaced++;
-			// If the player has placed more than 7 tiles, then the move
-			// become invalid.
-			if(tilesPlaced > 7)
-			{
-				goBack = true;
-				break;
-			}
 			// Calculate scores, and remove the letter from the bag.
 			if(boardState.letterBag.at(s[stringPosition]) > 0)
 			{

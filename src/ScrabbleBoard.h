@@ -26,7 +26,7 @@ private:
 		then this will be used instead of the normal putWord functionality.
 		The difference from normal mode is that words don't have to be connected
 		when you place them down. And the first word doesn't have to cross the
-		center.
+		center. Also, the words can place down more than 7 tiles.
 	*/
 	int putWordFreeplay(size_t x, size_t y, bool vertical, std::string s);
 

@@ -56,7 +56,17 @@ You need to have the following programs installed in order to complete the build
 processes. 
 - cmake (Version 3.18 or greater)
 - gcc
-Then just run cmake in the root directory of the repository.
+
+Then you will want to run the following commands from the root of the repo.
+```shell
+cmake -DCMAKE_BUILD_TYPE=Release -B cmake-build-release
+cmake --build cmake-build-release/
+cd cmake-build-release/
+./scrabbleCPP
+```
+This should enable good optimizations. If you wish to debug, then anywhere it 
+says release in the above commands, type debug. I use CLion, and Clion does
+it automatically with its CMake Profile.
 
 ### Gotchas
 #### Different Rulesets

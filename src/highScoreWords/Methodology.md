@@ -12,7 +12,7 @@ Then select the highest possible scoring word with the letters that we have left
  Put refreshBoard function in the ScrabbleBoard class. ✓✓✓
 2. Create a script that finds the highest scoring words down the left side.
 This should find the 100 best words and put them in a vector. (100 can be
-reduced to possibly increase performance). (All words should be 15 letters).
+reduced to possibly increase performance). (All words should be 15 letters). ✓✓✓
 3. Create a script that gets 8 words that can connect to our big word.
 4. Create a script that connects it all back to the center.
 5. Create a script that plays the whole game and gets the final score for our

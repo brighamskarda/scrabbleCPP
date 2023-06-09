@@ -7,6 +7,7 @@
 #include "highScoreWords/HighScoreWords.h"
 
 int main() {
+	std::cout << "Hello World" << std::endl;
 	HighScoreWords hsw;
 
 	// RandomGames rg;

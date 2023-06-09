@@ -6,7 +6,7 @@
 namespace constants
 {
 	inline constexpr std::string_view  DICTIONARY {
-		"resources/CollinsScrabbleWords2019.txt" };
+		"../resources/CollinsScrabbleWords2019.txt" };
 }
 
 #endif

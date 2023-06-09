@@ -14,7 +14,7 @@ void RandomGames::refreshBoard()
 
 void RandomGames::loadDictionary()
 {
-	std::ifstream dic(std::string(constants::DICTIONARY));
+	std::ifstream dic((std::string(constants::DICTIONARY)));
 	std::string currentWord;
 	std::getline(dic, currentWord);
 	while(true)

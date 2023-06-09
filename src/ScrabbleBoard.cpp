@@ -153,7 +153,7 @@ int ScrabbleBoard::putWordFreeplay(size_t x, size_t y, bool vertical,
 
 void ScrabbleBoard::loadDictionary()
 {
-	std::ifstream dic(std::string(constants::DICTIONARY));
+	std::ifstream dic((std::string(constants::DICTIONARY)));
 	std::string currentWord;
 	std::getline(dic, currentWord);
 	while(true)

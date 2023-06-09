@@ -52,16 +52,11 @@ about how I want to do this.
 Next step, implement an algorithm that actually gives good results.
 
 ### Build Instructions
-The build is pretty simple as there are only a few cpp files to compile so far.
-I use MinGW for windows, not MSVC. The GCC on linux should work just fine as
-well.
-
-I created a Powershell7 script ([build.ps1](build.ps1)) that automatically
-builds, and then runs my code for me. Powershell7 is easily available on Windows
-and linux and is much better than Powershell5.
-
-I know its almost sinful to use Powershell, but I don't like the implementations
-of BASH for windows, and was too lazy to use an actual build system like CMake.
+You need to have the following programs installed in order to complete the build
+processes. 
+- cmake (Version 3.18 or greater)
+- gcc
+Then just run cmake in the root directory of the repository.
 
 ### Gotchas
 #### Different Rulesets
@@ -80,13 +75,3 @@ It would be fairly easy to implement the above rules. But for my purposes right
 now, I don't have a need/want to work on a scrabble board with anything but the
 standard rules. Suppport for different rulesets is not a gurantee for this
 project.
-
-#### Optimization
-I did not include optimizations in my build/run script. You probably want to
-give it the parameters -O2 or -O3 for good optimization.
-
-### Shoutouts
-I would like to give a huge shoutout to the devlopers of the
-[Pulsar Edit](https://pulsar-edit.dev/). I was so dissapointed when Atom was
-deprecated, as it was my favorite code editor. Pulsar has been a great
-continuation of the Atom project. ScrabbleCPP is being developed in Pulsar.

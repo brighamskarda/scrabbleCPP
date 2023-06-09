@@ -5,7 +5,7 @@
 
 void HighScoreWords::loadDictionary()
 {
-	std::ifstream dic(std::string(constants::DICTIONARY));
+	std::ifstream dic((std::string(constants::DICTIONARY)));
 	std::string currentWord;
 	std::getline(dic, currentWord);
 	while(true)
@@ -47,7 +47,6 @@ void HighScoreWords::loadBaseWords(size_t num)
 				}
 			}
 		}
-
 	}
 }
 

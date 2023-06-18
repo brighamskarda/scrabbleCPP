@@ -84,11 +84,12 @@ HighScoreWords::HighScoreWords()
 	sb.setFreePlay(true);
 	loadDictionaries();
 	loadBaseWords();
-	printBaseWords();
 }
 
 void HighScoreWords::start()
 {
+	time_t startTime = time(NULL);
+	std::cout << "Start time: " << ctime(&startTime) << std::endl;
 	int highScore = 0;
 	BoardState bestBoardState = sb.getBoardState();
 	std::mt19937 random;
@@ -236,6 +237,11 @@ void HighScoreWords::start()
 		{
 			bestBoardState = sb.getBoardState();
 			highScore = finalWordPoints;
+			time_t currentTime = time(NULL);
+			time_t time_elapsed = currentTime - startTime;
+			std::cout << "Time: " << ctime(&currentTime);
+			std::cout << "Time Elapsed: " << time_elapsed / 3600 << ":" <<
+					  (time_elapsed / 60) % 60 << ":" << time_elapsed % 60 << "\n";
 			std::cout << "Points generated - " << finalWordPoints << '\n';
 			sb.printBoard();
 		}

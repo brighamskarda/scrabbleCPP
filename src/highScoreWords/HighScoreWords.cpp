@@ -141,6 +141,39 @@ void HighScoreWords::start()
 			else extraWords.pop_back();
 		}
 
+		std::vector<std::pair<char, std::string>> extraExtraWords = {};
+		int wordsTried = 0;
+		for(char i = 0; i < 8; i++)
+		{
+			bool wP = false;
+			while(!wP && wordsTried < 10000)
+			{
+				char randomIndex = random() % 15;
+				if(randomIndex == 0 || randomIndex == 7 || randomIndex == 14)
+				{
+					continue;
+				}
+				bool shouldContinue = false;
+				for(std::pair<char, std::string> a : extraExtraWords)
+				{
+					if(a.first == randomIndex)
+					{
+						shouldContinue = true;
+						break;
+					}
+				}
+				if(shouldContinue) continue;
+				extraExtraWords.push_back({randomIndex, alphabeticalDic[baseWord[randomIndex]][random() %
+						alphabeticalDic[baseWord[randomIndex]].size()]});
+				if(sb.putWord(0, randomIndex, false, extraExtraWords[extraExtraWords.size()-1].second) !=
+				   INT_MIN)
+				{
+					wP = true;
+				}
+				else extraExtraWords.pop_back();
+				wordsTried++;
+			}
+		}
 		/*// Get the other five words
 		for(int i = 2; i < 7;)
 		{
@@ -193,6 +226,10 @@ void HighScoreWords::start()
 		for(std::pair<char, std::string> p : extraWords)
 		{
 			sb.putWord(1, p.first, false, p.second.substr(1));
+		}
+		for(std::pair<char, std::string> a : extraExtraWords)
+		{
+			sb.putWord(0, a.first, false, a.second);
 		}
 		int finalWordPoints = sb.putWord(0, 0, true, baseWord);
 		if(finalWordPoints > highScore)

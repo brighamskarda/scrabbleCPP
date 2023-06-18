@@ -25,7 +25,7 @@ private:
 	/**
 		@param num The best *num* words are saved.
 	*/
-	void loadBaseWords(size_t num = 100);
+	void loadBaseWords(size_t num = 2);
 
 	void printBaseWords();
 

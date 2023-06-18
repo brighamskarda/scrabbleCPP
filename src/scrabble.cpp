@@ -9,6 +9,7 @@
 int main() {
 	std::cout << "Hello World" << std::endl;
 	HighScoreWords hsw;
+	hsw.start();
 
 	// RandomGames rg;
 	// rg.runRandomGames();
